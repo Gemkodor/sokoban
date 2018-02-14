@@ -9,7 +9,7 @@ class Player:
         x = self.pos[0]
         y = self.pos[1]
 
-        if direction == K_LEFT:
+        if direction == K_LEFT or direction == K_q:
             if x > 0 and level.structure[y][x - 1] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
                 # Player just move on an empty case to the left
                 self.pos[0] -= 1
@@ -29,7 +29,7 @@ class Player:
 
                 self.pos[0] -= 1
 
-        if direction == K_RIGHT:
+        if direction == K_RIGHT or direction == K_d:
             if level.structure[y][x + 1] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
                 self.pos[0] += 1
             elif level.structure[y][x + 1] in [SOKOBAN.BOX, SOKOBAN.TARGET_FILLED] and level.structure[y][x + 2] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
@@ -48,7 +48,7 @@ class Player:
 
                 self.pos[0] += 1
 
-        if direction == K_UP:
+        if direction == K_UP or direction == K_z:
             if y > 0 and level.structure[y - 1][x] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
                 self.pos[1] -= 1
             elif y > 1 and level.structure[y - 1][x] in [SOKOBAN.BOX, SOKOBAN.TARGET_FILLED] and level.structure[y - 2][x] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
@@ -67,7 +67,7 @@ class Player:
 
                 self.pos[1] -= 1
 
-        if direction == K_DOWN:
+        if direction == K_DOWN or direction == K_s:
             if level.structure[y + 1][x] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
                 self.pos[1] += 1
             elif level.structure[y + 1][x] in [SOKOBAN.BOX, SOKOBAN.TARGET_FILLED] and level.structure[y + 2][x] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
@@ -83,7 +83,7 @@ class Player:
                     level.structure[y + 2][x] = SOKOBAN.TARGET_FILLED
                 else:
                     level.structure[y + 2][x] = SOKOBAN.BOX
-                    
+
                 self.pos[1] += 1
 
     def render(self, window, textures):

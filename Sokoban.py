@@ -7,7 +7,6 @@ from game import *
 def main():
     pygame.init()
     pygame.key.set_repeat(100, 100)
-    #window = pygame.display.set_mode((SOKOBAN.MAPWIDTH * SOKOBAN.SPRITESIZE, SOKOBAN.MAPHEIGHT * SOKOBAN.SPRITESIZE))
     window = pygame.display.set_mode((SOKOBAN.WINDOW_WIDTH, SOKOBAN.WINDOW_HEIGHT))
 
     run = True
@@ -19,10 +18,12 @@ def main():
             if event.key == K_j:
                 sokoban = Game(window)
                 sokoban.start()
+            elif event.key == K_c:
+                sokoban = Game(window)
+                sokoban.scores.load()
             elif event.key == K_ESCAPE:
                 run = False
 
-        # pygame.draw.rect(window, (0,255,0), (0,0,SOKOBAN.MAPWIDTH * SOKOBAN.SPRITESIZE,SOKOBAN.MAPHEIGHT * SOKOBAN.SPRITESIZE))
         pygame.draw.rect(window, SOKOBAN.BLUE, (0,0,SOKOBAN.WINDOW_WIDTH,SOKOBAN.WINDOW_HEIGHT))
         pygame.display.flip()
 

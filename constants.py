@@ -13,6 +13,11 @@ TARGET_FILLED   = 4
 PLAYER          = 5
 AIR             = 6
 
+UP      = 100
+DOWN    = 101
+LEFT    = 102
+RIGHT   = 103
+
 # Colors
 WHITE           = (255,255,255)
 BLACK           = (0,0,0)

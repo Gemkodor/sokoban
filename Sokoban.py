@@ -7,6 +7,7 @@ from game import *
 def main():
     pygame.init()
     pygame.key.set_repeat(100, 100)
+    pygame.display.set_caption("Sokoban Game")
     window = pygame.display.set_mode((SOKOBAN.WINDOW_WIDTH, SOKOBAN.WINDOW_HEIGHT))
 
     run = True

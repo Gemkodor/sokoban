@@ -8,7 +8,7 @@ class Player:
         self.pos = level.position_player
         self.direction = SOKOBAN.DOWN
 
-    def move(self, direction, level):
+    def move(self, direction, level, interface):
         x = self.pos[0]
         y = self.pos[1]
 
@@ -102,13 +102,9 @@ class Player:
                 self.pos[1] += 1
 
         if levelHasChanged:
-            if len(level.last_structure_state) >= 3:
-                level.last_structure_state = []
-            level.last_structure_state.append({
-                'previous_level_structure': previous_level_structure,
-                'previous_player_pos': previous_player_pos
-            })
-            level.last_state_index = len(level.last_structure_state)
+            level.last_structure_state = previous_level_structure
+            level.last_player_pos = previous_player_pos
+            interface.colorTxtCancel = SOKOBAN.BLACK
 
     def render(self, window, textures):
         if self.direction == SOKOBAN.DOWN:

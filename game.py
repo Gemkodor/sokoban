@@ -32,6 +32,7 @@ class Game:
         self.board = pygame.Surface((self.level.width, self.level.height))
         if self.player:
             self.player.pos = self.level.position_player
+            self.player_interface.level = self.level
         else:
             self.player = Player(self.level)
 
@@ -50,7 +51,7 @@ class Game:
                 self.play = False
             if event.key in [K_UP, K_DOWN, K_LEFT, K_RIGHT, K_z, K_s, K_q, K_d]:
                 # Move player
-                self.player.move(event.key, self.level)
+                self.player.move(event.key, self.level, self.player_interface)
                 if self.has_win():
                     self.index_level += 1
                     self.scores.save()
@@ -60,9 +61,11 @@ class Game:
                 self.load_level()
             if event.key == K_l:
                 # Cancel last move
-                self.level.cancel_last_move(self.player)
+                self.level.cancel_last_move(self.player, self.player_interface)
         if event.type == MOUSEBUTTONUP:
             self.player_interface.click(event.pos, self.level)
+        if event.type == MOUSEMOTION:
+            self.player_interface.mouse_pos = event.pos
 
     def update_screen(self):
         pygame.draw.rect(self.board, SOKOBAN.WHITE, (0,0, self.level.width * SOKOBAN.SPRITESIZE, self.level.height * SOKOBAN.SPRITESIZE))

@@ -25,7 +25,7 @@ def main():
             elif event.key == K_ESCAPE:
                 run = False
 
-        pygame.draw.rect(window, SOKOBAN.BLUE, (0,0,SOKOBAN.WINDOW_WIDTH,SOKOBAN.WINDOW_HEIGHT))
+        pygame.draw.rect(window, SOKOBAN.WHITE, (0,0,SOKOBAN.WINDOW_WIDTH,SOKOBAN.WINDOW_HEIGHT))
         pygame.display.flip()
 
     pygame.quit()

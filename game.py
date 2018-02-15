@@ -5,17 +5,18 @@ import constants as SOKOBAN
 from level import *
 from player import *
 from scores import *
+from player_interface import *
 
 class Game:
     def __init__(self, window):
         self.window = window
-        self.font_menu = pygame.font.Font('assets/fonts/FreeSansBold.ttf', 18)
         self.load_textures()
         self.player = None
         self.index_level = 1
         self.load_level()
         self.play = True
         self.scores = Scores(self)
+        self.player_interface = PlayerInterface(self.player, self.level)
 
     def load_textures(self):
        self.textures = {
@@ -23,8 +24,6 @@ class Game:
            SOKOBAN.BOX: pygame.image.load('assets/images/box.png').convert_alpha(),
            SOKOBAN.TARGET: pygame.image.load('assets/images/target.png').convert_alpha(),
            SOKOBAN.TARGET_FILLED: pygame.image.load('assets/images/valid_box.png').convert_alpha(),
-           #SOKOBAN.PLAYER: pygame.image.load('assets/images/player.png').convert_alpha()
-
            SOKOBAN.PLAYER: pygame.image.load('assets/images/player_sprites.png').convert_alpha()
        }
 
@@ -59,6 +58,11 @@ class Game:
             if event.key == K_r:
                 # Restart current level
                 self.load_level()
+            if event.key == K_l:
+                # Cancel last move
+                self.level.cancel_last_move(self.player)
+        if event.type == MOUSEBUTTONUP:
+            self.player_interface.click(event.pos, self.level)
 
     def update_screen(self):
         pygame.draw.rect(self.board, SOKOBAN.WHITE, (0,0, self.level.width * SOKOBAN.SPRITESIZE, self.level.height * SOKOBAN.SPRITESIZE))
@@ -71,9 +75,7 @@ class Game:
         pos_y_board = (SOKOBAN.WINDOW_HEIGHT / 2) - (self.board.get_height() / 2)
         self.window.blit(self.board, (pox_x_board, pos_y_board))
 
-        txt = "Niveau " + str(self.index_level)
-        txtLevel = self.font_menu.render(txt, True, (0,0,0), (255,255,255))
-        self.window.blit(txtLevel, (10, 10))
+        self.player_interface.render(self.window, self.index_level)
 
         pygame.display.flip()
 

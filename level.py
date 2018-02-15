@@ -3,6 +3,8 @@ import constants as SOKOBAN
 
 class Level:
     def __init__(self, level_to_load):
+        self.last_structure_state = []
+        self.last_state_index = len(self.last_structure_state)
         self.load(level_to_load)
 
     def load(self, level):
@@ -32,6 +34,14 @@ class Level:
 
         self.width = max_width * SOKOBAN.SPRITESIZE
         self.height = (len(rows) - 1) * SOKOBAN.SPRITESIZE
+
+    def cancel_last_move(self, player):
+        if self.last_structure_state and self.last_state_index > 0:
+            self.structure = self.last_structure_state[self.last_state_index - 1]['previous_level_structure']
+            player.pos = self.last_structure_state[self.last_state_index - 1]['previous_player_pos']
+            self.last_state_index -= 1
+        else:
+            print("No previous state to load")
 
     def render(self, window, textures):
         for y in range(len(self.structure)):

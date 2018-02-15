@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import constants as SOKOBAN
+from copy import deepcopy
 
 class Player:
     def __init__(self, level):
@@ -11,6 +12,10 @@ class Player:
         x = self.pos[0]
         y = self.pos[1]
 
+        levelHasChanged = False
+        previous_level_structure = deepcopy(level.structure)
+        previous_player_pos = [x,y]
+
         if direction == K_LEFT or direction == K_q:
             self.direction = SOKOBAN.LEFT
             if x > 0 and level.structure[y][x - 1] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
@@ -18,6 +23,7 @@ class Player:
                 self.pos[0] -= 1
             elif x > 1 and level.structure[y][x - 1] in [SOKOBAN.BOX, SOKOBAN.TARGET_FILLED] and level.structure[y][x - 2] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
                 # Player is trying to push a box to the left
+                levelHasChanged = True
                 if level.structure[y][x - 1] == SOKOBAN.TARGET_FILLED:
                     level.structure[y][x - 1] = SOKOBAN.TARGET
                 else:
@@ -38,6 +44,7 @@ class Player:
                 self.pos[0] += 1
             elif level.structure[y][x + 1] in [SOKOBAN.BOX, SOKOBAN.TARGET_FILLED] and level.structure[y][x + 2] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
                 # Player is trying to push a box to the right
+                levelHasChanged = True
                 if level.structure[y][x + 1] == SOKOBAN.TARGET_FILLED:
                     level.structure[y][x + 1] = SOKOBAN.TARGET
                 else:
@@ -58,6 +65,7 @@ class Player:
                 self.pos[1] -= 1
             elif y > 1 and level.structure[y - 1][x] in [SOKOBAN.BOX, SOKOBAN.TARGET_FILLED] and level.structure[y - 2][x] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
                 # Player is trying to push a box to the left
+                levelHasChanged = True
                 if level.structure[y - 1][x] == SOKOBAN.TARGET_FILLED:
                     level.structure[y - 1][x] = SOKOBAN.TARGET
                 else:
@@ -78,6 +86,7 @@ class Player:
                 self.pos[1] += 1
             elif level.structure[y + 1][x] in [SOKOBAN.BOX, SOKOBAN.TARGET_FILLED] and level.structure[y + 2][x] in [SOKOBAN.AIR, SOKOBAN.TARGET]:
                 # Player is trying to push a box to the left
+                levelHasChanged = True
                 if level.structure[y + 1][x] == SOKOBAN.TARGET_FILLED:
                     level.structure[y + 1][x] = SOKOBAN.TARGET
                 else:
@@ -92,8 +101,16 @@ class Player:
 
                 self.pos[1] += 1
 
+        if levelHasChanged:
+            if len(level.last_structure_state) >= 3:
+                level.last_structure_state = []
+            level.last_structure_state.append({
+                'previous_level_structure': previous_level_structure,
+                'previous_player_pos': previous_player_pos
+            })
+            level.last_state_index = len(level.last_structure_state)
+
     def render(self, window, textures):
-        # window.blit(textures[SOKOBAN.PLAYER], (self.pos[0] * SOKOBAN.SPRITESIZE, self.pos[1] * SOKOBAN.SPRITESIZE))
         if self.direction == SOKOBAN.DOWN:
             top = 0
         elif self.direction == SOKOBAN.LEFT:

@@ -27,9 +27,9 @@ class PlayerInterface:
 
     def render(self, window, level):
         self.txtLevel = "Niveau " + str(level)
-        self.txtLevelSurface = self.font_menu.render(self.txtLevel, True, self.colorTxtLevel, (255,255,255))
+        self.txtLevelSurface = self.font_menu.render(self.txtLevel, True, self.colorTxtLevel, SOKOBAN.WHITE)
         window.blit(self.txtLevelSurface, (10, 10))
 
-        self.txtCancelSurface = self.font_menu.render(self.txtCancel, True, self.colorTxtCancel, (255,255,255))
+        self.txtCancelSurface = self.font_menu.render(self.txtCancel, True, self.colorTxtCancel, SOKOBAN.WHITE)
         self.posTxtCancel = (SOKOBAN.WINDOW_WIDTH - self.txtCancelSurface.get_width() - 10, 10)
         window.blit(self.txtCancelSurface, self.posTxtCancel)

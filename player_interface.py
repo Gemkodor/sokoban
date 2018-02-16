@@ -11,8 +11,10 @@ class PlayerInterface:
         self.colorTxtLevel = SOKOBAN.BLACK
         self.txtCancel = "Annuler le dernier coup"
         self.colorTxtCancel = SOKOBAN.GREY
+        self.txtReset = "Recommencer le niveau"
+        self.colorTxtReset = SOKOBAN.BLACK
 
-    def click(self, pos_click, level):
+    def click(self, pos_click, level, game):
         x = pos_click[0]
         y = pos_click[1]
 
@@ -21,6 +23,11 @@ class PlayerInterface:
          and y > self.posTxtCancel[1] and y < self.posTxtCancel[1] + self.txtCancelSurface.get_height():
             level.cancel_last_move(self.player, self)
             self.colorTxtCancel = SOKOBAN.GREY
+
+        # Reset level
+        if x > self.posTxtReset[0] and x < self.posTxtReset[0] + self.txtResetSurface.get_width() \
+        and y > self.posTxtReset[1] and y < self.posTxtReset[1] + self.txtResetSurface.get_height():
+            game.load_level()
 
     def setTxtColors(self):
         pass
@@ -33,3 +40,7 @@ class PlayerInterface:
         self.txtCancelSurface = self.font_menu.render(self.txtCancel, True, self.colorTxtCancel, SOKOBAN.WHITE)
         self.posTxtCancel = (SOKOBAN.WINDOW_WIDTH - self.txtCancelSurface.get_width() - 10, 10)
         window.blit(self.txtCancelSurface, self.posTxtCancel)
+
+        self.txtResetSurface = self.font_menu.render(self.txtReset, True, self.colorTxtReset, SOKOBAN.WHITE)
+        self.posTxtReset = ((SOKOBAN.WINDOW_WIDTH / 2) - (self.txtResetSurface.get_width() / 2), 10)
+        window.blit(self.txtResetSurface, self.posTxtReset)

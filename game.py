@@ -63,7 +63,7 @@ class Game:
                 # Cancel last move
                 self.level.cancel_last_move(self.player, self.player_interface)
         if event.type == MOUSEBUTTONUP:
-            self.player_interface.click(event.pos, self.level)
+            self.player_interface.click(event.pos, self.level, self)
         if event.type == MOUSEMOTION:
             self.player_interface.mouse_pos = event.pos
 
